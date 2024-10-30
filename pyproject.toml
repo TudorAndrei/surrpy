@@ -1,0 +1,32 @@
+[project]
+name = "surrpy"
+requires-python = ">=3.12"
+classifiers = [
+  "Programming Language :: Rust",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Programming Language :: Python :: Implementation :: PyPy",
+]
+dynamic = ["version"]
+description = "Add your description here"
+authors = [{ name = "TudorAndrei", email = "tudorandrei.dumitrascu@gmail.com" }]
+dependencies = ["maturin"]
+readme = "README.md"
+
+
+[tool.rye]
+managed = true
+dev-dependencies = ["pytest>=8.3.3"]
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/surrpy"]
+
+[build-system]
+requires = ["maturin>=1.7,<2.0"]
+build-backend = "maturin"
+
+[tool.maturin]
+features = ["pyo3/extension-module"]
+module-name = "surrpy.surrpy"
