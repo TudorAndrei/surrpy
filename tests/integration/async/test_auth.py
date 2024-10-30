@@ -37,17 +37,13 @@ class TestAsyncAuth:
         with pytest.raises(RuntimeError) as context:
             asyncio.run(self.login("root", "wrong"))
 
-        assert (
-            True == "There was a problem with authentication" in str(context.exception)
-        )
+        assert True is ("There was a problem with authentication" in str(context.value))
 
     def test_login_wrong_username(self):
         with pytest.raises(RuntimeError) as context:
             asyncio.run(self.login("wrong", "root"))
 
-        assert (
-            True == "There was a problem with authentication" in str(context.exception)
-        )
+        assert True is ("There was a problem with authentication" in str(context.value))
 
 
 if __name__ == "__main__":

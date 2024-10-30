@@ -12,6 +12,7 @@ authors = [{ name = "TudorAndrei", email = "tudorandrei.dumitrascu@gmail.com" }]
 dependencies = [
     "maturin",
     "patchelf>=0.17.2.1",
+    "pytest-asyncio>=0.24.0",
 ]
 readme = "README.md"
 
