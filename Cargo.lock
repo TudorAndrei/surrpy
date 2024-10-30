@@ -3435,25 +3435,6 @@ checksum = "13c2bddecc57b384dee18652358fb23172facb8a2c51ccc10d74c157bdea3292"
 
 [[package]]
 name = "surrealdb"
-version = "0.1.0"
-dependencies = [
- "bollard",
- "crossbeam-channel",
- "futures",
- "futures-util-preview",
- "lazy_static",
- "pyo3",
- "pyo3-asyncio",
- "serde",
- "serde_json",
- "surrealdb 2.0.4",
- "thiserror",
- "tokio",
- "uuid",
-]
-
-[[package]]
-name = "surrealdb"
 version = "2.0.4"
 source = "git+https://github.com/surrealdb/surrealdb.git#6d5150c66488710389039147bce9a942fb91684d"
 dependencies = [
@@ -3605,6 +3586,25 @@ dependencies = [
  "revision",
  "tokio",
  "vart",
+]
+
+[[package]]
+name = "surrpy"
+version = "0.1.0"
+dependencies = [
+ "bollard",
+ "crossbeam-channel",
+ "futures",
+ "futures-util-preview",
+ "lazy_static",
+ "pyo3",
+ "pyo3-asyncio",
+ "serde",
+ "serde_json",
+ "surrealdb",
+ "thiserror",
+ "tokio",
+ "uuid",
 ]
 
 [[package]]

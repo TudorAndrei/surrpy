@@ -6,8 +6,8 @@ import json
 from typing import TYPE_CHECKING, Dict, Optional
 
 from surrpy.asyncio_runtime import AsyncioRuntime
-from surrpy.errors import surrpyError
-from surrpy.rust_surrpy import (
+from surrpy.errors import SurrealError
+from surrpy.surrpy import (
     rust_authenticate_future,
     rust_sign_in_future,
     rust_sign_up_future,
@@ -47,7 +47,7 @@ class SignInMixin:
                 _signin(self._connection, password, username)
             )
         except Exception as e:
-            raise surrpyError(e) from None
+            raise SurrealError(e) from None
 
     def signup(
         self: surrpy,
@@ -81,7 +81,7 @@ class SignInMixin:
                 _signup(self._connection, data, namespace, database, scope)
             )
         except Exception as e:
-            raise surrpyError(e) from None
+            raise SurrealError(e) from None
 
     def authenticate(self: surrpy, jwt: str) -> bool:
         """
@@ -100,7 +100,7 @@ class SignInMixin:
                 _authenticate(self._connection, jwt)
             )
         except Exception as e:
-            raise surrpyError(e) from None
+            raise SurrealError(e) from None
 
     def invalidate(self: surrpy) -> None:
         """
@@ -116,4 +116,4 @@ class SignInMixin:
             loop_manager = AsyncioRuntime()
             loop_manager.loop.run_until_complete(_invalidate(self._connection))
         except Exception as e:
-            raise surrpyError(e) from None
+            raise SurrealError(e) from None

@@ -5,8 +5,8 @@ from __future__ import annotations
 import json
 from typing import TYPE_CHECKING, List, Union
 
-from surrpy.errors import surrpyError
-from surrpy.rust_surrpy import (
+from surrpy.errors import SurrealError
+from surrpy.surrpy import (
     rust_create_future,
     rust_delete_future,
 )
@@ -32,7 +32,7 @@ class AsyncCreateMixin:
                 await rust_create_future(self._connection, name, json.dumps(data))
             )
         except Exception as e:
-            raise surrpyError(e) from None
+            raise SurrealError(e) from None
 
     async def delete(self: surrpy, name: str) -> Union[List[dict], dict]:
         """
@@ -45,4 +45,4 @@ class AsyncCreateMixin:
         try:
             return await rust_delete_future(self._connection, name)
         except Exception as e:
-            raise surrpyError(e) from None
+            raise SurrealError(e) from None

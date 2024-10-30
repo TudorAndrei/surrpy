@@ -5,8 +5,8 @@ from __future__ import annotations
 import json
 from typing import TYPE_CHECKING, List, Union
 
-from surrpy.errors import surrpyError
-from surrpy.rust_surrpy import (
+from surrpy.errors import SurrealError
+from surrpy.surrpy import (
     rust_merge_future,
     rust_patch_future,
     rust_update_future,
@@ -34,7 +34,7 @@ class AsyncUpdateMixin:
                 await rust_update_future(self._connection, resource, json.dumps(data))
             )
         except Exception as e:
-            raise surrpyError(e) from None
+            raise SurrealError(e) from None
 
     async def merge(self: surrpy, resource: str, data: dict) -> Union[List[dict], dict]:
         """
@@ -49,7 +49,7 @@ class AsyncUpdateMixin:
                 await rust_merge_future(self._connection, resource, json.dumps(data))
             )
         except Exception as e:
-            raise surrpyError(e) from None
+            raise SurrealError(e) from None
 
     async def patch(self: surrpy, resource: str, data: dict) -> Union[List[dict], dict]:
         """
@@ -64,4 +64,4 @@ class AsyncUpdateMixin:
                 await rust_patch_future(self._connection, resource, json.dumps(data))
             )
         except Exception as e:
-            raise surrpyError(e) from None
+            raise SurrealError(e) from None

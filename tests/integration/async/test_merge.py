@@ -1,18 +1,18 @@
 """
-Tests the Update operation of the Asyncsurrealdb class with query and merge function.
+Tests the Update operation of the AsyncSurrealDB class with query and merge function.
 """
 
 import asyncio
 from typing import List
 from unittest import TestCase, main
 
-from surrealdb import Asyncsurrealdb
+from surrpy import AsycSurrealDB
 from tests.integration.url import Url
 
 
-class TestAsyncHttpMerge(TestCase):
-    def setUp(self):
-        self.connection = Asyncsurrealdb(Url().url)
+class TestAsyncHttpMerge:
+    def setup_method(self):
+        self.connection = AsycSurrealDB(Url().url)
         self.queries: List[str] = []
 
         async def login():
@@ -26,7 +26,7 @@ class TestAsyncHttpMerge(TestCase):
 
         asyncio.run(login())
 
-    def tearDown(self):
+    def teardown_method(self):
         async def teardown_queries():
             for query in self.queries:
                 await self.connection.query(query)
@@ -46,13 +46,10 @@ class TestAsyncHttpMerge(TestCase):
                     "active": True,
                 },
             )
-            self.assertEqual(
-                [
-                    {"active": True, "id": "user:jaime", "name": "Jaime"},
-                    {"active": True, "id": "user:tobie", "name": "Tobie"},
-                ],
-                await self.connection.query("SELECT * FROM user;"),
-            )
+            assert [
+                {"active": True, "id": "user:jaime", "name": "Jaime"},
+                {"active": True, "id": "user:tobie", "name": "Tobie"},
+            ] == await self.connection.query("SELECT * FROM user;")
 
         asyncio.run(merge_active())
 

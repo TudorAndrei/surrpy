@@ -34,7 +34,7 @@ macro_rules! py_future_wrapper {
 }
 
 #[pymodule]
-fn rust_surrpy(_py: Python, m: &PyModule) -> PyResult<()> {
+fn surrpy(_py: Python, m: &PyModule) -> PyResult<()> {
     let _ = m.add_wrapped(wrap_pyfunction!(rust_make_connection_future));
     let _ = m.add_wrapped(wrap_pyfunction!(rust_sign_in_future));
     let _ = m.add_wrapped(wrap_pyfunction!(rust_use_database_future));

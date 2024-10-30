@@ -1,17 +1,17 @@
 """
-Tests the Update operation of the surrealdb class with query and merge function.
+Tests the Update operation of the surrpy class with query and merge function.
 """
 
 from typing import List
 from unittest import TestCase, main
 
-from surrealdb import surrealdb
+from surrpy import SurrealDB
 from tests.integration.url import Url
 
 
-class TestMerge(TestCase):
-    def setUp(self):
-        self.connection = surrealdb(Url().url)
+class TestMerge:
+    def setup_method(self):
+        self.connection = SurrealDB(Url().url)
         self.queries: List[str] = []
         self.connection.signin(
             {
@@ -20,7 +20,7 @@ class TestMerge(TestCase):
             }
         )
 
-    def tearDown(self):
+    def teardown_method(self):
         for query in self.queries:
             self.connection.query(query)
 
@@ -36,13 +36,10 @@ class TestMerge(TestCase):
                 "active": True,
             },
         )
-        self.assertEqual(
-            [
-                {"active": True, "id": "user:jaime", "name": "Jaime"},
-                {"active": True, "id": "user:tobie", "name": "Tobie"},
-            ],
-            self.connection.query("SELECT * FROM user;"),
-        )
+        assert [
+            {"active": True, "id": "user:jaime", "name": "Jaime"},
+            {"active": True, "id": "user:tobie", "name": "Tobie"},
+        ] == self.connection.query("SELECT * FROM user;")
 
 
 if __name__ == "__main__":

@@ -28,7 +28,7 @@ from surrpy.async_execution_mixins.create import AsyncCreateMixin
 from surrpy.async_execution_mixins.query import AsyncQueryMixin
 from surrpy.async_execution_mixins.set import AsyncSetMixin
 from surrpy.async_execution_mixins.update import AsyncUpdateMixin
-from surrpy.rust_surrpy import (
+from surrpy.surrpy import (
     rust_make_connection_future,
     rust_use_database_future,
     rust_use_namespace_future,
@@ -81,7 +81,7 @@ class ConnectionController(type):
         return super().__call__(*args, **kwargs)
 
 
-class Asyncsurrpy(
+class AsycSurrealDB(
     AsyncCreateMixin,
     AsyncSignInMixin,
     AsyncSetMixin,

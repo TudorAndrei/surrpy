@@ -6,8 +6,8 @@ import json
 from typing import TYPE_CHECKING, List, Union
 
 from surrpy.asyncio_runtime import AsyncioRuntime
-from surrpy.errors import surrpyError
-from surrpy.rust_surrpy import rust_create_future, rust_delete_future
+from surrpy.errors import SurrealError
+from surrpy.surrpy import rust_create_future, rust_delete_future
 
 if TYPE_CHECKING:
     from surrpy.connection_interface import surrpy
@@ -37,7 +37,7 @@ class CreateMixin:
                 )
             )
         except Exception as e:
-            raise surrpyError(e) from None
+            raise SurrealError(e) from None
 
     def delete(self: surrpy, name: str) -> Union[List[dict], dict]:
         """
@@ -55,4 +55,4 @@ class CreateMixin:
             loop_manager = AsyncioRuntime()
             return loop_manager.loop.run_until_complete(_delete(self._connection, name))
         except Exception as e:
-            raise surrpyError(e) from None
+            raise SurrealError(e) from None

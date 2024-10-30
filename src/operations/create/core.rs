@@ -7,7 +7,7 @@ use crate::connection::interface::WrappedConnection;
 use serde_json::value::Value;
 use surrealdb::opt::Resource;
 use surrealdb::sql::Thing;
-use surrealdb::{RecordId, RecordIdKey};
+use surrealdb::RecordId;
 
 /// Creates a record in the database.
 ///

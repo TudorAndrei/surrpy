@@ -1,18 +1,18 @@
 """
-Tests the Update operation of the Asyncsurrealdb class with query and update function.
+Tests the Update operation of the AsyncSurrealDB class with query and update function.
 """
 
 import asyncio
 from typing import List
 from unittest import TestCase, main
 
-from surrealdb import Asyncsurrealdb
+from surrpy import AsycSurrealDB
 from tests.integration.url import Url
 
 
-class TestAsyncUpdate(TestCase):
-    def setUp(self):
-        self.connection = Asyncsurrealdb(Url().url)
+class TestAsyncUpdate:
+    def setup_method(self):
+        self.connection = AsycSurrealDB(Url().url)
         self.queries: List[str] = []
 
         async def login():
@@ -26,7 +26,7 @@ class TestAsyncUpdate(TestCase):
 
         asyncio.run(login())
 
-    def tearDown(self):
+    def teardown_method(self):
         async def teardown_queries():
             for query in self.queries:
                 await self.connection.query(query)
@@ -42,21 +42,18 @@ class TestAsyncUpdate(TestCase):
             outcome = await self.connection.query(
                 "UPDATE user SET lastname = 'Morgan Hitchcock';"
             )
-            self.assertEqual(
-                [
-                    {
-                        "id": "user:jaime",
-                        "lastname": "Morgan Hitchcock",
-                        "name": "Jaime",
-                    },
-                    {
-                        "id": "user:tobie",
-                        "lastname": "Morgan Hitchcock",
-                        "name": "Tobie",
-                    },
-                ],
-                outcome,
-            )
+            assert [
+                {
+                    "id": "user:jaime",
+                    "lastname": "Morgan Hitchcock",
+                    "name": "Jaime",
+                },
+                {
+                    "id": "user:tobie",
+                    "lastname": "Morgan Hitchcock",
+                    "name": "Tobie",
+                },
+            ] == outcome
 
         asyncio.run(update())
 
@@ -86,16 +83,13 @@ class TestAsyncUpdate(TestCase):
                     "tags": ["python", "test"],
                 },
             )
-            self.assertEqual(
-                {
-                    "id": "person:⟨失败⟩",
-                    "user": "still me",
-                    "pass": "*æ失败",
-                    "really": False,
-                    "tags": ["python", "test"],
-                },
-                outcome,
-            )
+            assert {
+                "id": "person:⟨失败⟩",
+                "user": "still me",
+                "pass": "*æ失败",
+                "really": False,
+                "tags": ["python", "test"],
+            } == outcome
 
         asyncio.run(update_person_with_tags())
 

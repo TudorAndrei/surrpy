@@ -5,8 +5,8 @@ from __future__ import annotations
 import json
 from typing import TYPE_CHECKING
 
-from surrpy.errors import surrpyError
-from surrpy.rust_surrpy import rust_set_future
+from surrpy.errors import SurrealError
+from surrpy.surrpy import rust_set_future
 
 if TYPE_CHECKING:
     from surrpy.connection_interface import surrpy
@@ -29,10 +29,10 @@ class AsyncSetMixin:
             json_str = json.dumps(value)
         except json.JSONEncodeError as e:
             print(f"cannot serialize value {type(value)} to json")
-            raise surrpyError(e) from None
+            raise SurrealError(e) from None
 
         if json_str is not None:
             try:
                 _ = await rust_set_future(self._connection, key, json.dumps(value))
             except Exception as e:
-                raise surrpyError(e) from None
+                raise SurrealError(e) from None

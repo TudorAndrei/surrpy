@@ -1,6 +1,7 @@
 """
-Builds the Rust binary and links it to the surrealdb.py python client
+Builds the Rust binary and links it to the surrpy.py python client
 """
+
 import fnmatch
 import os
 import shutil
@@ -32,11 +33,11 @@ def delete_file(file_path: os.path) -> None:
         print(f"File '{file_path}' does not exist.")
 
 
-def find_and_move_rust_surrealdb_file(
+def find_and_move_rust_surrpy_file(
     start_path: os.path, destination_path: os.path, new_name: str
 ) -> None:
     """
-    Finds the rust_surrealdb.so file and moves it to the surrealdb directory.
+    Finds the rust_surrpy.so file and moves it to the surrpy directory.
 
     :param start_path: the path to start the search from for the built .so rust lib.
     :param destination_path: the path to move the rust lib to.
@@ -44,7 +45,7 @@ def find_and_move_rust_surrealdb_file(
     """
     for root, dirs, files in os.walk(start_path):
         if "lib" in root:
-            for filename in fnmatch.filter(files, "rust_surrealdb*.so"):
+            for filename in fnmatch.filter(files, "rust_surrpy*.so"):
                 source_file = os.path.join(root, filename)
                 destination_file = os.path.join(destination_path, new_name)
                 shutil.move(source_file, destination_file)
@@ -58,11 +59,11 @@ script_directory = os.path.dirname(script_path)
 tests_directory = os.path.join(script_directory, "..")
 main_directory = os.path.join(script_directory, "..", "..")
 target_directory = os.path.join(main_directory, "target")
-egg_info_dir = os.path.join(main_directory, "surrealdb.egg-info")
+egg_info_dir = os.path.join(main_directory, "surrpy.egg-info")
 build_dir = os.path.join(main_directory, "build")
 
-surrealdb_dir = os.path.join(main_directory, "surrealdb")
-embedded_rust_lib_dir = os.path.join(main_directory, "surrealdb", "rust_surrealdb.so")
+surrpy_dir = os.path.join(main_directory, "surrpy")
+embedded_rust_lib_dir = os.path.join(main_directory, "surrpy", "rust_surrpy.so")
 test_venv_dir = os.path.join(tests_directory, "venv")
 source_venv = os.path.join(test_venv_dir, "bin", "activate")
 
@@ -81,14 +82,14 @@ def main():
     os.system(f"pip install --no-cache-dir {main_directory}")
     print("local build: rust lib built")
 
-    # move the rust lib into the surrealdb directory
-    print("local build: moving rust lib into surrealdb directory")
-    find_and_move_rust_surrealdb_file(
+    # move the rust lib into the surrpy directory
+    print("local build: moving rust lib into surrpy directory")
+    find_and_move_rust_surrpy_file(
         start_path=build_dir,
-        destination_path=surrealdb_dir,
-        new_name="rust_surrealdb.so",
+        destination_path=surrpy_dir,
+        new_name="rust_surrpy.so",
     )
-    print("local build: rust lib moved into surrealdb directory")
+    print("local build: rust lib moved into surrpy directory")
 
     # cleanup
     delete_directory(dir_path=build_dir)

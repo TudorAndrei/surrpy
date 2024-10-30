@@ -8,7 +8,6 @@
 //! The unit tests for the delete operation can be found in the `tests` module in the create core module.
 use crate::connection::interface::WrappedConnection;
 use surrealdb::opt::Resource;
-use surrealdb::sql::Range;
 use surrealdb::RecordId;
 
 /// Delete all records, or a specific record

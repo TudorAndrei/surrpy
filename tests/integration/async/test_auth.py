@@ -6,15 +6,17 @@ import asyncio
 import os
 from unittest import TestCase, main
 
-from surrealdb import Asyncsurrealdb
+import pytest
+
+from surrpy import AsycSurrealDB
 from tests.integration.url import Url
 
 
-class TestAsyncAuth(TestCase):
-    def setUp(self):
-        self.connection = Asyncsurrealdb(Url().url)
+class TestAsyncAuth:
+    def setup_method(self):
+        self.connection = AsycSurrealDB(Url().url)
 
-    def tearDown(self):
+    def teardown_method(self):
         pass
 
     async def login(self, username: str, password: str):
@@ -29,22 +31,22 @@ class TestAsyncAuth(TestCase):
 
     def test_login_success(self):
         outcome = asyncio.run(self.login("root", "root"))
-        self.assertEqual(None, outcome)
+        assert None is outcome
 
     def test_login_wrong_password(self):
-        with self.assertRaises(RuntimeError) as context:
+        with pytest.raises(RuntimeError) as context:
             asyncio.run(self.login("root", "wrong"))
 
-        self.assertEqual( True,
-            'There was a problem with authentication' in str(context.exception)
+        assert (
+            True == "There was a problem with authentication" in str(context.exception)
         )
 
     def test_login_wrong_username(self):
-        with self.assertRaises(RuntimeError) as context:
+        with pytest.raises(RuntimeError) as context:
             asyncio.run(self.login("wrong", "root"))
 
-        self.assertEqual( True,
-            'There was a problem with authentication' in str(context.exception)
+        assert (
+            True == "There was a problem with authentication" in str(context.exception)
         )
 
 

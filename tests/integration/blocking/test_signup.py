@@ -1,21 +1,20 @@
 from typing import List
 from unittest import TestCase, main
 
-from surrealdb import surrealdb
+from surrpy import SurrealDB
 from tests.integration.url import Url
 
 
-class TestSignUp(TestCase):
-
-    def setUp(self):
+class TestSignUp:
+    def setup_method(self):
         self.queries = []
         self.email = "john.doe@example.com"
         self.password = "password123"
         self.namespace = "namespace"
         self.database = "database"
-        self.connection = surrealdb(Url().url)
+        self.connection = SurrealDB(Url().url)
 
-    def tearDown(self):
+    def teardown_method(self):
         for query in self.queries:
             self.connection.query(query)
 
@@ -44,10 +43,9 @@ class TestSignUp(TestCase):
         _wrapped_jwt = self.connection.signup(
             namespace=self.namespace,
             database=self.database,
-            scope="user_scope", data={
-            'email': self.email,
-            'password': self.password
-        })
+            scope="user_scope",
+            data={"email": self.email, "password": self.password},
+        )
         print(_wrapped_jwt)
 
 

@@ -16,11 +16,11 @@ DOCKER_CLIENT = docker.from_env()
 
 class DbInstance:
     """
-    Handles the Docker container for the surrealdb.
+    Handles the Docker container for the surrpy.
 
     Attributes:
-        version (str): The version of the surrealdb to run.
-        port (int): The port to run the surrealdb on.
+        version (str): The version of the surrpy to run.
+        port (int): The port to run the surrpy on.
         container (docker.models.containers.Container): The Docker container instance.
         id (str): The id of the Docker container.
     """
@@ -29,8 +29,8 @@ class DbInstance:
         """
         The constructor for the DbInstance class.
 
-        :param version: The version of the surrealdb to run.
-        :param port: The port to run the surrealdb on.
+        :param version: The version of the surrpy to run.
+        :param port: The port to run the surrpy on.
         """
         self.version: str = version
         self.port: int = port
@@ -44,7 +44,7 @@ class DbInstance:
         :return: None
         """
         self.container = DOCKER_CLIENT.containers.run(
-            image=f"surrealdb/surrealdb:{self.version}",
+            image=f"surrpy/surrpy:{self.version}",
             command="start",
             environment={
                 "SURREAL_USER": "root",

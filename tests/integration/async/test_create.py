@@ -6,13 +6,13 @@ import asyncio
 from typing import List
 from unittest import TestCase, main
 
-from surrealdb import Asyncsurrealdb
+from surrpy import AsycSurrealDB
 from tests.integration.url import Url
 
 
-class TestAsyncCreate(TestCase):
-    def setUp(self):
-        self.connection = Asyncsurrealdb(Url().url)
+class TestAsyncCreate:
+    def setup_method(self):
+        self.connection = AsycSurrealDB(Url().url)
         self.queries: List[str] = []
 
         async def login():
@@ -26,7 +26,7 @@ class TestAsyncCreate(TestCase):
 
         asyncio.run(login())
 
-    def tearDown(self):
+    def teardown_method(self):
         async def teardown_queries():
             for query in self.queries:
                 await self.connection.query(query)
@@ -41,13 +41,10 @@ class TestAsyncCreate(TestCase):
             await self.connection.query("CREATE user:jaime SET name = 'Jaime';")
 
             outcome = await self.connection.query("SELECT * FROM user;")
-            self.assertEqual(
-                [
-                    {"id": "user:jaime", "name": "Jaime"},
-                    {"id": "user:tobie", "name": "Tobie"},
-                ],
-                outcome,
-            )
+            assert [
+                {"id": "user:jaime", "name": "Jaime"},
+                {"id": "user:tobie", "name": "Tobie"},
+            ] == outcome
 
         asyncio.run(create())
 
@@ -57,10 +54,10 @@ class TestAsyncCreate(TestCase):
 
         async def delete():
             outcome = await self.connection.query("DELETE user;")
-            self.assertEqual([], outcome)
+            assert [] == outcome
 
             outcome = await self.connection.query("SELECT * FROM user;")
-            self.assertEqual([], outcome)
+            assert [] == outcome
 
         asyncio.run(delete())
 
@@ -79,18 +76,15 @@ class TestAsyncCreate(TestCase):
                 };
                 """
             )
-            self.assertEqual(
-                [
-                    {
-                        "id": "person:⟨失败⟩",
-                        "pass": "*æ失败",
-                        "really": True,
-                        "tags": ["python", "documentation"],
-                        "user": "me",
-                    }
-                ],
-                outcome,
-            )
+            assert [
+                {
+                    "id": "person:⟨失败⟩",
+                    "pass": "*æ失败",
+                    "really": True,
+                    "tags": ["python", "documentation"],
+                    "user": "me",
+                }
+            ] == outcome
 
         asyncio.run(create_person_with_tags())
 
@@ -107,16 +101,13 @@ class TestAsyncCreate(TestCase):
                     "tags": ["python", "test"],
                 },
             )
-            self.assertEqual(
-                {
-                    "id": "person:⟨失败⟩",
-                    "pass": "*æ失败",
-                    "really": False,
-                    "tags": ["python", "test"],
-                    "user": "still me",
-                },
-                outcome,
-            )
+            assert {
+                "id": "person:⟨失败⟩",
+                "pass": "*æ失败",
+                "really": False,
+                "tags": ["python", "test"],
+                "user": "still me",
+            } == outcome
 
         asyncio.run(create_person_with_tags())
 

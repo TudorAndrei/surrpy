@@ -11,8 +11,8 @@ import json
 from typing import TYPE_CHECKING, List, Union
 
 from surrpy.asyncio_runtime import AsyncioRuntime
-from surrpy.errors import surrpyError
-from surrpy.rust_surrpy import (
+from surrpy.errors import SurrealError
+from surrpy.surrpy import (
     rust_query_future,
     rust_select_future,
 )
@@ -67,7 +67,7 @@ class QueryMixin:
                 )[0]
             )
         except Exception as e:
-            raise surrpyError(e) from None
+            raise SurrealError(e) from None
 
     def select(self: surrpy, resource: str) -> Union[List[dict], dict]:
         """

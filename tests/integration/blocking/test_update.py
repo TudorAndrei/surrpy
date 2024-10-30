@@ -1,17 +1,17 @@
 """
-Tests the Update operation of the Asyncsurrealdb class with query and update function.
+Tests the Update operation of the AsyncSurrealDB class with query and update function.
 """
 
 from typing import List
 from unittest import TestCase, main
 
-from surrealdb import surrealdb
+from surrpy import SurrealDB
 from tests.integration.url import Url
 
 
-class TestAsyncHttpUpdate(TestCase):
-    def setUp(self):
-        self.connection = surrealdb(Url().url)
+class TestAsyncHttpUpdate:
+    def setup_method(self):
+        self.connection = SurrealDB(Url().url)
         self.queries: List[str] = []
 
         self.connection.signin(
@@ -21,7 +21,7 @@ class TestAsyncHttpUpdate(TestCase):
             }
         )
 
-    def tearDown(self):
+    def teardown_method(self):
         for query in self.queries:
             self.connection.query(query)
 
@@ -32,13 +32,10 @@ class TestAsyncHttpUpdate(TestCase):
         outcome = self.connection.query(
             "UPDATE user SET lastname = 'Morgan Hitchcock';"
         )
-        self.assertEqual(
-            [
-                {"id": "user:jaime", "lastname": "Morgan Hitchcock", "name": "Jaime"},
-                {"id": "user:tobie", "lastname": "Morgan Hitchcock", "name": "Tobie"},
-            ],
-            outcome,
-        )
+        assert [
+            {"id": "user:jaime", "lastname": "Morgan Hitchcock", "name": "Jaime"},
+            {"id": "user:tobie", "lastname": "Morgan Hitchcock", "name": "Tobie"},
+        ] == outcome
 
     def test_update_person_with_tags(self):
         self.queries = ["DELETE person;"]
@@ -63,16 +60,13 @@ class TestAsyncHttpUpdate(TestCase):
                 "tags": ["python", "test"],
             },
         )
-        self.assertEqual(
-            {
-                "id": "person:⟨失败⟩",
-                "user": "still me",
-                "pass": "*æ失败",
-                "really": False,
-                "tags": ["python", "test"],
-            },
-            outcome,
-        )
+        assert {
+            "id": "person:⟨失败⟩",
+            "user": "still me",
+            "pass": "*æ失败",
+            "really": False,
+            "tags": ["python", "test"],
+        } == outcome
 
 
 if __name__ == "__main__":

@@ -5,8 +5,8 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Dict, Optional
 import json
 
-from surrpy.errors import surrpyError
-from surrpy.rust_surrpy import (
+from surrpy.errors import SurrealError
+from surrpy.surrpy import (
     rust_authenticate_future,
     rust_sign_in_future,
     rust_sign_up_future,
@@ -71,7 +71,7 @@ class AsyncSignInMixin:
         try:
             return await rust_authenticate_future(self._connection, jwt)
         except Exception as e:
-            raise surrpyError(e) from None
+            raise SurrealError(e) from None
 
     async def invalidate(self: surrpy) -> None:
         """
@@ -82,4 +82,4 @@ class AsyncSignInMixin:
         try:
             return await rust_invalidate_future(self._connection)
         except Exception as e:
-            raise surrpyError(e) from None
+            raise SurrealError(e) from None

@@ -9,8 +9,8 @@ from __future__ import annotations
 import json
 from typing import TYPE_CHECKING, List, Union
 
-from surrpy.errors import surrpyError
-from surrpy.rust_surrpy import (
+from surrpy.errors import SurrealError
+from surrpy.surrpy import (
     rust_query_future,
     rust_select_future,
 )
@@ -33,7 +33,7 @@ class AsyncQueryMixin:
         try:
             return json.loads(await rust_query_future(self._connection, query))[0]
         except Exception as e:
-            raise surrpyError(e) from None
+            raise SurrealError(e) from None
 
     async def select(self: surrpy, resource: str) -> Union[List[dict], dict]:
         """

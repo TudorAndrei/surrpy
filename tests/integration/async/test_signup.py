@@ -7,21 +7,21 @@ import os
 from unittest import TestCase, main
 from typing import List
 
-from surrealdb import Asyncsurrealdb
+from surrpy import AsycSurrealDB
 from tests.integration.url import Url
 
 
-class TestAsyncSignup(TestCase):
-    def setUp(self):
+class TestAsyncSignup:
+    def setup_method(self):
         self.queries: List[str] = []
         self.email = "john.doe@example.com"
         self.password = "password123"
         self.namespace = "namespace"
         self.database = "database"
         self.scope = "user_scope"
-        self.connection = Asyncsurrealdb(Url().url)
+        self.connection = AsycSurrealDB(Url().url)
 
-    def tearDown(self):
+    def teardown_method(self):
         async def teardown_queries():
             for query in self.queries:
                 await self.connection.query(query)
@@ -33,6 +33,7 @@ class TestAsyncSignup(TestCase):
             # await self.connection.connect()
             _ = await self.connection.use_database(self.database)
             _ = await self.connection.use_namespace(self.namespace)
+
         asyncio.run(namespace())
 
     def query(self):
@@ -41,8 +42,10 @@ class TestAsyncSignup(TestCase):
         SIGNUP ( CREATE user SET email = $email, password = crypto::argon2::generate($password) )
         SIGNIN ( SELECT * FROM user WHERE email = $email AND crypto::argon2::compare(password, $password) )
         """
+
         async def _query():
             return await self.connection.query(query_str)
+
         return asyncio.run(_query())
 
     def signup(self):
@@ -53,8 +56,8 @@ class TestAsyncSignup(TestCase):
                 scope=self.scope,
                 data={"email": self.email, "password": self.password},
             )
-        return asyncio.run(_signup())
 
+        return asyncio.run(_signup())
 
     async def login(self, username: str, password: str):
         await self.connection.connect()

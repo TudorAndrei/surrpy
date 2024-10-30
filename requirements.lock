@@ -13,5 +13,4 @@
 maturin==1.7.4
     # via surrpy
 patchelf==0.17.2.1
-    # via maturin
     # via surrpy

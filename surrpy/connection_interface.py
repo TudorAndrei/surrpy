@@ -29,7 +29,7 @@ from surrpy.execution_mixins.create import CreateMixin
 from surrpy.execution_mixins.query import QueryMixin
 from surrpy.execution_mixins.set import SetMixin
 from surrpy.execution_mixins.update import UpdateMixin
-from surrpy.rust_surrpy import (
+from surrpy.surrpy import (
     rust_make_connection_future,
     rust_use_database_future,
     rust_use_namespace_future,

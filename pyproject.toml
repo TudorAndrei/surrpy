@@ -9,7 +9,10 @@ classifiers = [
 dynamic = ["version"]
 description = "Add your description here"
 authors = [{ name = "TudorAndrei", email = "tudorandrei.dumitrascu@gmail.com" }]
-dependencies = ["maturin"]
+dependencies = [
+    "maturin",
+    "patchelf>=0.17.2.1",
+]
 readme = "README.md"
 
 
@@ -29,4 +32,4 @@ build-backend = "maturin"
 
 [tool.maturin]
 features = ["pyo3/extension-module"]
-module-name = "surrpy.surrpy"
+module-name = "surrpy"

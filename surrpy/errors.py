@@ -1,2 +1,2 @@
-class surrpyError(Exception):
+class SurrealError(Exception):
     """Base class for exceptions in this module."""

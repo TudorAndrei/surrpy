@@ -1,16 +1,17 @@
 """
-Tests the Set operation of the Asyncsurrealdb class.
+Tests the Set operation of the AsyncSurrealDB class.
 """
+
 from typing import List
 from unittest import TestCase, main
 
-from surrealdb import surrealdb
+from surrpy import SurrealDB
 from tests.integration.url import Url
 
 
-class TestSet(TestCase):
-    def setUp(self):
-        self.connection = surrealdb(Url().url)
+class TestSet:
+    def setup_method(self):
+        self.connection = SurrealDB(Url().url)
         self.queries: List[str] = []
         self.connection.signin(
             {
@@ -19,25 +20,22 @@ class TestSet(TestCase):
             }
         )
 
-    def tearDown(self):
+    def teardown_method(self):
         for query in self.queries:
             self.connection.query(query)
 
     def test_set_ql(self):
         self.queries = ["DELETE person;"]
-        query = "CREATE person:100 SET name = 'Tobie', company = 'surrealdb', skills = ['Rust', 'Go', 'JavaScript'];"
+        query = "CREATE person:100 SET name = 'Tobie', company = 'surrpy', skills = ['Rust', 'Go', 'JavaScript'];"
         outcome = self.connection.query(query)
-        self.assertEqual(
-            [
-                {
-                    "id": "person:100",
-                    "name": "Tobie",
-                    "company": "surrealdb",
-                    "skills": ["Rust", "Go", "JavaScript"],
-                }
-            ],
-            outcome,
-        )
+        assert [
+            {
+                "id": "person:100",
+                "name": "Tobie",
+                "company": "surrpy",
+                "skills": ["Rust", "Go", "JavaScript"],
+            }
+        ] == outcome
 
     def test_set(self):
         self.queries = ["DELETE person;"]
@@ -52,15 +50,12 @@ class TestSet(TestCase):
         )
         _ = self.connection.query(query)
         outcome = self.connection.query("SELECT * FROM person;")
-        self.assertEqual(
-            [
-                {
-                    "id": "person:100",
-                    "name": {"last": "Morgan Hitchcock", "name": "Tobie"},
-                }
-            ],
-            outcome,
-        )
+        assert [
+            {
+                "id": "person:100",
+                "name": {"last": "Morgan Hitchcock", "name": "Tobie"},
+            }
+        ] == outcome
 
 
 if __name__ == "__main__":

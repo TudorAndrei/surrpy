@@ -1,6 +1,5 @@
 use pyo3::{pyclass, pymethods};
 
-use crate::types::resource::Resource;
 
 #[pyclass]
 pub struct Table(String);

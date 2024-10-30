@@ -6,8 +6,8 @@ import json
 from typing import TYPE_CHECKING
 
 from surrpy.asyncio_runtime import AsyncioRuntime
-from surrpy.errors import surrpyError
-from surrpy.rust_surrpy import (
+from surrpy.errors import SurrealError
+from surrpy.surrpy import (
     rust_set_future,
 )
 
@@ -36,7 +36,7 @@ class SetMixin:
             json_str = json.dumps(value)
         except json.JSONEncodeError as e:
             print(f"cannot serialize value {type(value)} to json")
-            raise surrpyError(e) from None
+            raise SurrealError(e) from None
 
         if json_str is not None:
             try:
@@ -45,4 +45,4 @@ class SetMixin:
                     _set(self._connection, key, json_str)
                 )
             except Exception as e:
-                raise surrpyError(e) from None
+                raise SurrealError(e) from None
